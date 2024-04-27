@@ -26,4 +26,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: RiverLoggerSpa/package-lock.json
     - run: sh scripts/AngularBuild.sh
