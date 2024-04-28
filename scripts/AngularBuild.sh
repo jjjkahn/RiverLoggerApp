@@ -1,7 +1,5 @@
 #!/bin/sh
 echo "Stating pipeline"
-ls
-cd RiverLoggerSpa
 echo "Running npm ci"
 npm ci
 echo "Running Build"
