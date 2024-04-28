@@ -5,4 +5,4 @@ npm ci
 echo "Running Build"
 npm run build --if-present
 echo "Running Test"
-npm test-headless
+npm run test-headless
