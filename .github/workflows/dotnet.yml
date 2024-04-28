@@ -10,25 +10,31 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  buildApi:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./RiverLoggerApi/
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: |
-          cd RiverLoggerApi/          
-          dotnet restore 
-    - name: Build
-      run: |
-          cd RiverLoggerApi/
-          dotnet build --no-restore 
-    - name: Test
-      run: |
-         cd RiverLoggerApi/
-         dotnet test --no-build --verbosity normal
+    - name: Run restore build and test script
+      run: sh ../scripts/DotnetBuild.sh
+  buildMaui:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./RiverLoggerMobileApp/
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Run restore build and test script
+      run: sh ../scripts/DotnetBuild.sh
