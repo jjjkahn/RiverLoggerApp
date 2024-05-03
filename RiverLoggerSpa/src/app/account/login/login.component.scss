@@ -12,6 +12,10 @@
     border-radius: 10px;
     background-color: #f4f7f6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .login-header-img {
+      max-height: 200px;
+      object-fit: contain;
+    }
 
     .form-group {
       margin-bottom: 20px;
