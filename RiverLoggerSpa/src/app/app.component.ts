@@ -5,9 +5,9 @@ import { LoginComponent } from './account/login/login.component';
 
 @Component({
   imports: [
+    RouterOutlet,
     RegisterComponent,
-    LoginComponent,
-    RouterOutlet
+    LoginComponent
   ],
   selector: 'app-root',
   standalone: true,
