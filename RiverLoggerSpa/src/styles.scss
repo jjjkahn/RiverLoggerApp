@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+$green: #34a853;
+$lightGreen: #3dcf64;
+$white: #fff;
+$black: #000000;
+$h1-size: 45px;
+$h2-size: 35px;
+$h3-size: 30px;
+$h4-size: 25px;
+$h5-size: 22px;
+$h6-size: 20px;
+$p-size: 16px;
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: $p-size;
+  color: $black;
+
+  h1 {
+    color: $green;
+    font-size: $h1-size;
+  }
+  h2 {
+    color: $green;
+    font-size: $h2-size;
+  }
+  h3 {
+    font-size: $h3-size;
+  }
+  h4 {
+    font-size: $h4-size;
+  }
+  h5 {
+    font-size: $h5-size;
+  }
+  h6 {
+    font-size: $h6-size;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    &-primary {
+      background-color: $green;
+      color: $white;
+      font-size: $p-size;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $lightGreen;
+      }
+    }
+  }
+}
