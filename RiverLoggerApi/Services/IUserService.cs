@@ -4,9 +4,11 @@ namespace RiverLoggerApi.Services
 {
     public interface IUserService
     {
-        Task<AuthenticateResponse?> Authenticate(AuthenticateRequest model);
+        Task Create(User model);
+        Task Delete(Guid id);
         Task<IEnumerable<User>> GetAll();
-        Task<User?> GetById(Guid id);
-        Task<User?> AddAndUpdateUser(User user);
+        Task<User> GetById(Guid id);
+        Task Update(Guid id, User model);
+        Task<AuthenticateResponse?> Authenticate(AuthenticateRequest model);
     }
 }
