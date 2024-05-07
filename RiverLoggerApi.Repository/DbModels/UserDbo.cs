@@ -16,12 +16,9 @@ namespace RiverLoggerApi.Repository.DbModels
         public string Email { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
-        [EmailAddress]
         public string EmailConfirmed { get; set; }
     }
 }

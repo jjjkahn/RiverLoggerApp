@@ -44,15 +44,25 @@ namespace RiverLoggerApi.Repository
             async Task _initUsers()
             {
                 var sql = """
-                CREATE TABLE IF NOT EXISTS Users (
-                    Id VARCHAR(255) NOT NULL ,
-                    Email VARCHAR(255),
-                    Name VARCHAR(255),
-                    LastName VARCHAR(255),
-                    Email VARCHAR(255),
-                    Role INT,
-                    PRIMARY KEY (Id)
-                );
+            DROP TABLE IF EXISTS `Users`;
+
+            CREATE TABLE `Users` (
+              `id` mediumint(8) unsigned NOT NULL auto_increment,
+              `UserId` varchar(36) NOT NULL,
+              `Name` varchar(255) default NULL,
+              `LastName` varchar(255) default NULL,
+              `Email` varchar(255) default NULL,
+              `Password` varchar(255),
+              PRIMARY KEY (`id`)
+            ) AUTO_INCREMENT=1;
+
+            INSERT INTO `Users` (`UserId`,`Name`,`LastName`,`Email`,`Password`)
+            VALUES
+              ("FBCD7EA4-7EC9-7646-AF4A-ED1AAF8A537D","Simon","Glenn","dui@yahoo.ca","IVW17GNL9AB"),
+              ("44A6BC4E-79CB-3B08-7457-6276D2C444ED","Catherine","Dickson","metus.in.lorem@hotmail.org","QON48BHJ6QL"),
+              ("158FE8B1-C3D8-4C7D-DC13-4D2969DDFAD2","Constance","Barrera","imperdiet@aol.ca","HHF12PWX5FV"),
+              ("F487FE43-6B9D-A5F5-0CC5-882EE71A4555","Lance","Mccray","metus.aliquam.erat@protonmail.net","PLJ19QHG5VU"),
+              ("6D4EDD18-67D2-698C-7B33-775B882629D6","Amir","Bullock","eget@icloud.ca","LDB66XUK8MI");
             """;
                 await connection.ExecuteAsync(sql);
             }

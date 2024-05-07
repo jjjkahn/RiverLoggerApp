@@ -45,8 +45,8 @@ namespace RiverLoggerApi.Repository.Repository.UserRepository
         {
             using var connection = _context.CreateConnection();
             var sql = """
-            INSERT INTO Users (Title, FirstName, LastName, Email, Role, PasswordHash)
-            VALUES (@Title, @FirstName, @LastName, @Email, @Role, @PasswordHash)
+            INSERT INTO Users (Id, FirstName, LastName, Email, Password)
+            VALUES (@Id, @FirstName, @LastName, @Email, @Role, @Password)
         """;
             await connection.ExecuteAsync(sql, user);
         }
@@ -56,12 +56,10 @@ namespace RiverLoggerApi.Repository.Repository.UserRepository
             using var connection = _context.CreateConnection();
             var sql = """
             UPDATE Users 
-            SET Title = @Title,
-                FirstName = @FirstName,
+            SET Name = @Name,
                 LastName = @LastName, 
                 Email = @Email, 
-                Role = @Role, 
-                PasswordHash = @PasswordHash
+                Password = @Password
             WHERE Id = @Id
         """;
             await connection.ExecuteAsync(sql, user);
