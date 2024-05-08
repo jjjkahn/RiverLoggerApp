@@ -26,7 +26,7 @@ namespace RiverLoggerApi.Repository.Repository.UserRepository
             using var connection = _context.CreateConnection();
             var sql = """
             SELECT * FROM Users 
-            WHERE Id = @id
+            WHERE UserId = @UserId
         """;
             return await connection.QuerySingleOrDefaultAsync<UserDbo>(sql, new { id });
         }
@@ -45,8 +45,8 @@ namespace RiverLoggerApi.Repository.Repository.UserRepository
         {
             using var connection = _context.CreateConnection();
             var sql = """
-            INSERT INTO Users (Id, FirstName, LastName, Email, Password)
-            VALUES (@Id, @FirstName, @LastName, @Email, @Role, @Password)
+            INSERT INTO Users (UserId, Name, LastName, Email, Password)
+            VALUES (@UserId, @Name, @LastName, @Email, @Password)
         """;
             await connection.ExecuteAsync(sql, user);
         }
@@ -60,7 +60,7 @@ namespace RiverLoggerApi.Repository.Repository.UserRepository
                 LastName = @LastName, 
                 Email = @Email, 
                 Password = @Password
-            WHERE Id = @Id
+            WHERE UserId = @UserId
         """;
             await connection.ExecuteAsync(sql, user);
         }

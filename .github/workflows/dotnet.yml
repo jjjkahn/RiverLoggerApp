@@ -24,6 +24,7 @@ jobs:
         dotnet-version: 8.0.x
     - name: Run restore build and test script
       run: sh ../scripts/DotnetBuild.sh
+  
   buildMaui:
 
     runs-on: ubuntu-latest
