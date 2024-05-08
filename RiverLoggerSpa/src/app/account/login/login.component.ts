@@ -1,37 +1,70 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { User } from '../../models/user';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule
+  ],
 })
-export class LoginComponent {
-  loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
-  });
+export class LoginComponent implements OnInit {
+  user: User;
+  loginForm: FormGroup;
+  submitted = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+
+
+  constructor(private formBuilder: FormBuilder) {
+    this.user = {
+      name: '',
+      lastName: '',
+      password: '',
+      email: ''
+    }
+    this.loginForm = new FormGroup({
+      email: new FormControl(this.user.email, [Validators.required, Validators.email]),
+      password: new FormControl(this.user.password, [Validators.required])
+    })
+  }
+
+  ngOnInit() {
+    this.initLoginForm();
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.loginForm.controls;
+  }
+
+  initLoginForm() {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
 
   onSubmit() {
-    this.authService
-      .login(this.loginForm.value.email!, this.loginForm.value.password!)
-      .subscribe(
-        () => {
-          // Rediriger l'utilisateur vers une autre page après la connexion réussie
-          //this.router.navigate(['/dashboard']);
+    this.submitted = true;
 
-          console.log('you Are logged in in');
-        },
-        (error) => {
-          console.log('Erreur de connexion:', error);
-          // Gérer l'affichage d'un message d'erreur à l'utilisateur
-        }
-      );
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.loginForm.value, null, 2));
   }
 }
+
+
