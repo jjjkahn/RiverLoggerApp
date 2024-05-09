@@ -12,8 +12,9 @@ namespace RiverLoggerApi.Test.Controllers
         {
             _userServiceMock = new Mock<IUserService>();
         }
+
         [Fact]
-        public void GivenACalltoCreateUser_WhenAUserIsPassed_ThenUserServiceShouldBeCalledOnce()
+        public void GivenACalltoRegisterUser_WhenAUserIsPassed_ThenUserServiceShouldBeCalledOnce()
         {
             //Arrage
             var user = GeAUser();
@@ -21,11 +22,24 @@ namespace RiverLoggerApi.Test.Controllers
             var uc = new UserController(_userServiceMock.Object);
 
             //Act
-            uc.CreateUser(user);
+            uc.RegisterUser(user);
 
             //Assert
-            _userServiceMock.Verify(x=>x.Create(user),Times.Once);
+            _userServiceMock.Verify(x => x.Create(user), Times.Once);
+        }
 
+        [Fact]
+        public async Task GivenACalltoGetAll_WhenIsCalled_ThenUserServiceShouldBeCalledOnceAsync()
+        {
+            //Arrage
+            _userServiceMock.Setup(x => x.GetAll()).Verifiable();
+            var uc = new UserController(_userServiceMock.Object);
+
+            //Act
+             await uc.Get();
+
+            //Assert
+            _userServiceMock.Verify(x => x.GetAll(), Times.Once);
         }
 
         private static User GeAUser()

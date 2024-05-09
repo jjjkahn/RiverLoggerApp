@@ -4,7 +4,8 @@ namespace RiverLoggerApi.Repository.DbModels
 {
     public class UserDbo
     {
-        public Guid UserId { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
         [Required]
         public string Name { get; set; }
