@@ -17,21 +17,21 @@ namespace RiverLoggerApi.Controllers
         }
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _userService.GetAll();
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(Guid id)
         {
             return "value";
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public ActionResult CreateUser([FromBody] User user)
+        public ActionResult RegisterUser([FromBody] User user)
         {
             _userService.Create(user);
             return Ok();
@@ -39,13 +39,13 @@ namespace RiverLoggerApi.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(Guid id, [FromBody] User user)
         {
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
         }
     }
