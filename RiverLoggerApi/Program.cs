@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using RiverLoggerApi.Configuration;
 using RiverLoggerApi.Models;
@@ -19,23 +20,25 @@ namespace RiverLoggerApi
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
 
+            var appSettings = builder.Configuration.GetSection("AppSettings");
             // Add services to the container.
-            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+            services.Configure<AppSettings>(appSettings);
 
-            builder.Services.AddControllers();
+            services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            DbServiceConfigurator.ConfigureDB(builder.Services, builder);
+            DbServiceConfigurator.ConfigureDB(services, builder);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<JwtMiddleware>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             //JWT token
-            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-            builder.Services.AddAuthentication(opt =>
+            var jwtSettings = builder.Configuration.GetSection("AppSettings");
+
+            services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -47,14 +50,12 @@ namespace RiverLoggerApi
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer =  jwtSettings["ValidIssuer"],
-                    ValidAudience = jwtSettings["ValidAudience"],
+                    ValidIssuer = jwtSettings["JwtSetting:ValidIssuer"],
+                    ValidAudience = jwtSettings["JwtSetting:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(jwtSettings["SecurityKey"]))
+                        .GetBytes(jwtSettings["JwtSetting:SecurityKey"]))
                 };
             });
-
-            services.AddScoped<JwtMiddleware>();
 
             var app = builder.Build();
 
