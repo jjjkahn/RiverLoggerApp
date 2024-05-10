@@ -12,5 +12,5 @@ namespace RiverLoggerApi.ServicesConfiguration
             // configure DI for application services
             services.AddSingleton<DataContext>();
         }
-    }
+}
 }
