@@ -10,5 +10,6 @@ namespace RiverLoggerApi.Services
         Task<User> GetById(Guid id);
         Task Update(Guid id, User model);
         Task<AuthenticateResponse?> Authenticate(AuthenticateRequest model);
+        Task<User> GetByEmail(string email);
     }
 }

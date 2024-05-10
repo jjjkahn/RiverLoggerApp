@@ -17,6 +17,11 @@ namespace RiverLoggerApi.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
+        public async Task<User> GetByEmail(string email)
+        {
+            var userDbos = await _userRepository.GetByEmail(email);
+            return _mapper.Map<User>(userDbos);
+        }
 
         public async Task<IEnumerable<User>> GetAll()
         {

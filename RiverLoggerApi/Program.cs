@@ -1,9 +1,14 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using RiverLoggerApi.Configuration;
 using RiverLoggerApi.Models;
 using RiverLoggerApi.Repository;
 using RiverLoggerApi.Repository.Repository.UserRepository;
 using RiverLoggerApi.Services;
 using RiverLoggerApi.ServicesConfiguration;
+using System.Text;
 
 namespace RiverLoggerApi
 {
@@ -28,6 +33,29 @@ namespace RiverLoggerApi
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            //JWT token
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer =  jwtSettings["ValidIssuer"],
+                    ValidAudience = jwtSettings["ValidAudience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                        .GetBytes(jwtSettings["SecurityKey"]))
+                };
+            });
+
+            services.AddScoped<JwtMiddleware>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -43,7 +71,7 @@ namespace RiverLoggerApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseAuthentication();
 
             app.MapControllers();
 
