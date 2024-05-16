@@ -1,1 +1,78 @@
 /* You can add global styles to this file, and also import other style files */
+$green: #34a853;
+$lightGreen: #3dcf64;
+$white: #fff;
+$black: #000000;
+$h1-size: 45px;
+$h2-size: 35px;
+$h3-size: 30px;
+$h4-size: 25px;
+$h5-size: 22px;
+$h6-size: 20px;
+$p-size: 16px;
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: $p-size;
+  color: $black;
+
+  h1 {
+    color: $green;
+    font-size: $h1-size;
+  }
+  h2 {
+    color: $green;
+    font-size: $h2-size;
+    margin: 0;
+  }
+  h3 {
+    font-size: $h3-size;
+  }
+  h4 {
+    font-size: $h4-size;
+  }
+  h5 {
+    font-size: $h5-size;
+  }
+  h6 {
+    font-size: $h6-size;
+  }
+  .black {
+    color: $black;
+  }
+  .green {
+    color: $green;
+  }
+  .error {
+    color: #dc3545;
+    font-size: 12px;
+    margin: 5px 0;
+  }
+  .ng-submitted input.ng-invalid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + 0.75rem) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right calc(0.375em + 0.1875rem) center !important;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    &-primary {
+      background-color: $green;
+      color: $white;
+      font-size: $p-size;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $lightGreen;
+      }
+    }
+  }
+}

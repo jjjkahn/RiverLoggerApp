@@ -1,0 +1,29 @@
+<div class="login">
+    <div class="login-container">
+        <img src="../../../assets/img/extreme_sport_05-removebg-preview.png" class="login-header-img" alt=""
+            width="100%">
+        <h2 class="text-center">Sign in</h2>
+        <p class="text-center">Welcome to the River Logger App. Used by thousands of people.</p>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" formControlName="email" required>
+                <div *ngIf="email?.invalid && submitted == true" class="alert">
+                    <p *ngIf="email?.errors?.['required']" class="error">Email is required.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" formControlName="password" required>
+                <div *ngIf="password?.invalid && submitted == true" class="alert">
+                    <p *ngIf="password?.errors?.['required']" class="error">Password is required.</p>
+                </div>
+            </div>
+            <div class="flex-password-signup">
+                <a href="#" class="black">Forgot Password</a>
+                <a href="#" class="green">Sign up</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
