@@ -18,8 +18,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
 
-
-
   constructor(private formBuilder: FormBuilder) {
     this.user = {
       name: '',
@@ -34,18 +32,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initLoginForm();
   }
 
-  get f(): { [key: string]: AbstractControl } {
+  get formControls(): { [key: string]: AbstractControl } {
     return this.loginForm.controls;
-  }
-
-  initLoginForm() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
   }
 
   get email() {

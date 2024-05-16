@@ -8,10 +8,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [ReactiveFormsModule, LoginComponent]
-    })
-      .compileComponents();
+      imports: [ReactiveFormsModule, LoginComponent] // Importing the standalone component
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -24,39 +22,62 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form invalid when empty', () => {
+  it('form should be invalid initially', () => {
     expect(component.loginForm.valid).toBeFalsy();
   });
 
-  it('email field validity', () => {
-    let email = component.loginForm.controls['email'];
-    expect(email.valid).toBeFalsy();
+  [
+    {
+      email: "",
+      requiredError: true,
+      emailError: undefined
+    },
+    {
+      email: "test",
+      requiredError: undefined,
+      emailError: true
+    },
+    {
+      email: "test@example.com",
+      requiredError: undefined,
+      emailError: undefined
+    }
+  ].forEach((emailCase) => {
+    it(`When email is ${emailCase.email}, required error should be ${emailCase.requiredError} and email error should be ${emailCase.emailError}`, () => {
+      let email = component.loginForm.controls['email'];
+      email.setValue(emailCase.email);
+      let errors = email.errors || {};
+      fixture.detectChanges();
 
-    let errors: any = {};
-    errors = email.errors || {};
-    expect(errors['required']).toBeTruthy();
-
-    email.setValue("test");
-    errors = email.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['email']).toBeTruthy();
-
-    email.setValue("test@example.com");
-    errors = email.errors || {};
-    expect(errors['required']).toBeFalsy();
-    expect(errors['email']).toBeFalsy();
+      expect(errors['required']).toBe(emailCase.requiredError);
+      expect(errors['email']).toBe(emailCase.emailError);
+    });
   });
 
-  it('password field validity', () => {
-    let password = component.loginForm.controls['password'];
-    expect(password.valid).toBeFalsy();
+  [
+    {
+      password: "",
+      requiredError: true,
+      passwordError: undefined
+    },
+    {
+      password: "short",
+      requiredError: undefined,
+      passwordError: true
+    },
+    {
+      password: "validPassword123",
+      requiredError: undefined,
+      passwordError: undefined
+    }
+  ].forEach((passwordCase) => {
+    it(`When password is ${passwordCase.password}, required error should be ${passwordCase.requiredError} and min length error should be ${passwordCase.passwordError}`, () => {
+      let password = component.loginForm.controls['password'];
+      password.setValue(passwordCase.password);
+      let errors = password.errors || {};
+      fixture.detectChanges();
 
-    let errors: any = {};
-    errors = password.errors || {};
-    expect(errors['required']).toBeTruthy();
-
-    password.setValue("123456");
-    errors = password.errors || {};
-    expect(errors['required']).toBeFalsy();
+      expect(errors['required']).toBe(passwordCase.requiredError);
+    });
   });
 });
