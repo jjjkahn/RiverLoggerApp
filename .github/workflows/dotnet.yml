@@ -11,7 +11,6 @@ on:
 
 jobs:
   buildApi:
-
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,7 +23,19 @@ jobs:
         dotnet-version: 8.0.x
     - name: Run restore build and test script
       run: sh ../scripts/DotnetBuild.sh
-  
+    
+  custom-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          VAR1: Possible scripts
+          VAR2: Enviromental Variables
+        with:
+          script: |
+            const { VAR1, VAR2 } = process.env
+
+            console.log(`Hello ${VAR1} with ${VAR2}`)
   buildMaui:
 
     runs-on: ubuntu-latest
