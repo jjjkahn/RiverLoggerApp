@@ -29,7 +29,7 @@ namespace RiverLoggerApi.Services
             return _mapper.Map<IEnumerable<User>>(userDbos);
         }
 
-        public async Task<User> GetById(Guid id)
+        public async Task<User> GetById(string id)
         {
             var user = await _userRepository.GetById(id);
 
@@ -54,7 +54,7 @@ namespace RiverLoggerApi.Services
             await _userRepository.Create(user);
         }
 
-        public async Task Update(Guid id, User model)
+        public async Task Update(string id, User model)
         {
             var user = await _userRepository.GetById(id);
 
@@ -77,14 +77,9 @@ namespace RiverLoggerApi.Services
             await _userRepository.Update(user);
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(string id)
         {
             await _userRepository.Delete(id);
-        }
-
-        public Task<AuthenticateResponse?> Authenticate(AuthenticateRequest model)
-        {
-            throw new NotImplementedException();
         }
     }
 }

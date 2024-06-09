@@ -13,26 +13,24 @@ namespace RiverLoggerApi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IMapper _mapper;
-        private readonly JwtMiddleware _jwtHandler;
-        public AccountsController(IUserService userService, IMapper mapper, JwtMiddleware jwtHandler)
-        {
-            _userService = userService;
-            _mapper = mapper;
-            _jwtHandler = jwtHandler;
-        }
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] AuthenticateRequest userForAuthentication)
-        {
-            var user = await _userService.GetByEmail(userForAuthentication.Email);
-            if (user == null) // need to check for password still
-                return Unauthorized(new AuthenticateResponse { ErrorMessage = "Invalid Authentication" });
-            var signingCredentials = _jwtHandler.GetSigningCredentials();
-            var claims = _jwtHandler.GetClaims(user);
-            var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return Ok(new AuthenticateResponse { IsAuthSuccessful = true, Token = token });
-        }
+        //private readonly IUserService _userService;
+        //private readonly JwtMiddleware _jwtHandler;
+        //public AccountsController(IUserService userService, JwtMiddleware jwtHandler)
+        //{
+        //    _userService = userService;
+        //    _jwtHandler = jwtHandler;
+        //}
+        //[HttpPost("Login")]
+        //public async Task<IActionResult> Login([FromBody] AuthenticateRequest userForAuthentication)
+        //{
+        //    var user = await _userService.GetByEmail(userForAuthentication.Email);
+        //    if (user == null) // need to check for password still
+        //        return Unauthorized(new AuthenticateResponse { ErrorMessage = "Invalid Authentication" });
+        //    var signingCredentials = _jwtHandler.GetSigningCredentials();
+        //    var claims = _jwtHandler.GetClaims(user);
+        //    var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
+        //    var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        //    return Ok(new AuthenticateResponse { IsAuthSuccessful = true, Token = token });
+        //}
     }
 }

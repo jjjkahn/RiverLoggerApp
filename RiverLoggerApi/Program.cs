@@ -1,11 +1,19 @@
 
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RiverLoggerApi.Configuration;
+using RiverLoggerApi.Filters;
+using RiverLoggerApi.Helpers;
 using RiverLoggerApi.Models;
 using RiverLoggerApi.Repository;
+using RiverLoggerApi.Repository.Repository.EventRepository;
 using RiverLoggerApi.Repository.Repository.UserRepository;
 using RiverLoggerApi.Services;
 using RiverLoggerApi.ServicesConfiguration;
@@ -25,23 +33,55 @@ namespace RiverLoggerApi
             services.Configure<AppSettings>(appSettings);
 
             services.AddControllers();
+            services.AddLogging();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Riverlogger CRUD",
+                    Version = "v1"
+                });
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                option.OperationFilter<AuthResponsesOperationFilter>();
+            });
 
             DbServiceConfigurator.ConfigureDB(services, builder);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<JwtMiddleware>();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //AutoMapper
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperProfile());
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+
+
             //JWT token
             var jwtSettings = builder.Configuration.GetSection("AppSettings");
 
-            services.AddAuthentication(opt =>
+            services.AddAuthentication(options =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
             }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -56,6 +96,7 @@ namespace RiverLoggerApi
                         .GetBytes(jwtSettings["JwtSetting:SecurityKey"]))
                 };
             });
+
 
             var app = builder.Build();
 

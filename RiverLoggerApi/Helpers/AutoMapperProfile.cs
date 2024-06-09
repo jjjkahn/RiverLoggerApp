@@ -7,8 +7,10 @@ namespace RiverLoggerApi.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserDbo>();
-            CreateMap<UserDbo, User>();
+            CreateMap<LoginInputModel, UserDbo>().ReverseMap();
+            CreateMap<RegisterInputModel, UserDbo>().ReverseMap();
+            CreateMap<EventInputModel, EventDbo>().ReverseMap();
+            CreateMap<UserEventInputModel, UserEventDbo>().ReverseMap();
         }
     }
 }
