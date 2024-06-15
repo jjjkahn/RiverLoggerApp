@@ -1,25 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace RiverLoggerApi.Repository.DbModels
 {
     public class UserDbo
     {
-        [Required]
         public string UserId { get; set; }
 
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
         public string Email { get; set; }
 
-        [Required]
+        public string Name { get; set; }
+
+        public string LastName { get; set; }
+
         public string Password { get; set; }
 
-        [Required]
-        public string EmailConfirmed { get; set; }
+        public string Role { get; set; }
+
+        public IList<UserEventDbo> UserEvents { get; set; }
     }
 }

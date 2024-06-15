@@ -21,9 +21,9 @@ namespace RiverLoggerApi.Models
         public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
-        [EmailAddress]
-        public string EmailConfirmed { get; set; }
+        public string Role { get; set; }
+
+        public IList<UserEvent> UserEvents { get; set; }
 
         public User()
         {

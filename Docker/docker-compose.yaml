@@ -44,3 +44,9 @@ services:
       - my-db:/var/lib/sqlpad
 volumes:
   my-db:
+
+
+#Server: RiverLoggersqlDB
+#Database: db
+#User: user
+#Password: password
